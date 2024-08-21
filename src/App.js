@@ -1,8 +1,8 @@
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div>
+      <header>
         <h1>TAbeebZZdasdasdddd</h1>
       </header>
     </div>
