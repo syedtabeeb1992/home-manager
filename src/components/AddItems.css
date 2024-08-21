@@ -1,0 +1,4 @@
+.text-field-pair {
+    display: flex;
+    gap: 10px; /* Adjust the gap between the text fields as needed */
+  }

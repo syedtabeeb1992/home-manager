@@ -1,0 +1,102 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+.mt-1 {
+  margin-top: 10px!important;
+}
+.custom-fab {
+    position: fixed !important;
+    bottom: 20px;
+    right: 20px;
+  }
+
+
+
+  
+.custom-fab:hover {
+  background-color: #0056b3;
+}
+
+
+.searchBox {
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 16px;
+  margin-left: 21px;
+  margin-top: 30px;
+}
+
+.searchBox:focus {
+  outline: none;
+  border-color: #007bff; /* Change border color when focused */
+}
+
+
+/* Container for the cards */
+.wrapperItems {
+  display: flex;
+  flex-wrap: wrap;
+gap: 20px;
+  padding: 20px;
+}
+
+/* Individual card styling */
+.card {
+  flex: 0 0 calc(25% - 20px); /* Adjust to 25% */
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card h1 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.card p {
+  margin: 8px 0;
+  color: #666;
+}
+
+.card button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin-right: 8px; /* Add space between buttons */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.card button:last-child {
+  margin-right: 0; /* Remove margin for the last button */
+}
+
+.card button:hover {
+  background-color: #0056b3;
+}
+
+/* Media query for mobile responsiveness */
+@media only screen and (max-width: 768px) {
+  .card {
+    flex-basis: calc(50% - 20px);
+  }
+}
