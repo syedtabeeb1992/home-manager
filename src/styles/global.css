@@ -5,21 +5,24 @@ body {
   background-color: #f4f4f4;
 }
 .mt-1 {
-  margin-top: 10px!important;
+  margin-top: 10px !important;
 }
 .custom-fab {
-    position: fixed !important;
-    bottom: 20px;
-    right: 20px;
-  }
+  position: fixed !important;
+  bottom: 20px;
+  right: 20px;
+}
 
+/* =========================== COLORS */
 
+.redText {
+  color: red !important;
+}
 
-  
+/* =========================== */
 .custom-fab:hover {
   background-color: #0056b3;
 }
-
 
 .searchBox {
   box-sizing: border-box;
@@ -38,12 +41,11 @@ body {
   border-color: #007bff; /* Change border color when focused */
 }
 
-
 /* Container for the cards */
 .wrapperItems {
   display: flex;
   flex-wrap: wrap;
-gap: 20px;
+  gap: 20px;
   padding: 20px;
 }
 
@@ -67,12 +69,11 @@ gap: 20px;
 .card h1 {
   margin-top: 0;
   font-size: 24px;
-  color: #333;
+
 }
 
 .card p {
   margin: 8px 0;
-  color: #666;
 }
 
 .card button {

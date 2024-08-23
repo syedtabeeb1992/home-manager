@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 import AddItems from "./components/AddItems";
 import useGetdata from "./components/useGetdata";
 import useDeleteItem from "./components/useDeleteItem";
@@ -18,6 +18,8 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isVegSelected, setIsVegSelected] = useState(true);
   const [isNonVegSelected, setIsNonVegSelected] = useState(true);
+  const [isExpiring, setisExpiring] = useState(false);
+  const [isExpired, setExpired] = useState(false);
 
   useEffect(() => {
     setHouseholdItems(householditemsData);
@@ -77,6 +79,9 @@ function App() {
       : new Date(timestamp);
     const timeDifference = expiryDate.getTime() - currentDate;
     const daysToExpire = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+    console.log("Days to expire:", daysToExpire); // Debugging line
+
     return daysToExpire;
   };
   const filteredItems = householditems
@@ -135,38 +140,46 @@ function App() {
       <div className="wrapperItems">
         {filteredItems.map((items, index) => {
           if (items.categories && Array.isArray(items.categories)) {
-            return items.categories.map(
-              (response, subIndex) => (
-                (
-                  <div className="card" key={`${items.id}-${subIndex}`}>
-                    <h1>{response.name}</h1>
-                    <p>
-                      Bought on -{" "}
-                      {formatDateFromMilliseconds(response.boughtdate)}
-                    </p>
-                    <p>
-                      Expiring on -{" "}
-                      {formatDateFromMilliseconds(response.expirydate)}
-                    </p>
-                    <p>Quantity - {response.quantity}</p>
-                    <h2>{response.veg}</h2>
-                    <p>Expires in - {expirydate(response.expirydate)} Days</p>
-                    <button
-                      onClick={() => deleteItems(response.name, items.id)}
-                    >
-                      DeleteZZZZ
-                    </button>
-                    <button onClick={() => edit(response)}>EDIT</button>
-                  </div>
-                )
-              )
-            );
+            return items.categories.map((response, subIndex) => (
+              <div
+                className={
+                  expirydate(response.expirydate) <= 0 ? "card redText" : "card"
+                }
+                key={`${items.id}-${subIndex}`}
+              >
+                <h1>{response.name}</h1>
+                <p>
+                  Bought on - {formatDateFromMilliseconds(response.boughtdate)}
+                </p>
+                <p>
+                  Expiring on -{" "}
+                  {formatDateFromMilliseconds(response.expirydate)}
+                </p>
+                <p>Quantity - {response.quantity}</p>
+                <h2>{response.veg}</h2>
+
+                <p
+                  className={
+                    expirydate(response.expirydate) < 2 ? "redText" : ""
+                  }
+                >
+                  {expirydate(response.expirydate) < 0
+                    ? `Expired  : ${expirydate(response.expirydate)} Days Ago`
+                    : `Expires in : ${expirydate(response.expirydate)} Days`}
+           
+                </p>
+                <button onClick={() => deleteItems(response.name, items.id)}>
+                  Delete
+                </button>
+                <button onClick={() => edit(response)}>EDIT</button>
+              </div>
+            ));
           }
           return null;
         })}
       </div>
     </div>
   );
-};
+}
 
 export default App;
