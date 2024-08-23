@@ -148,7 +148,7 @@ function App() {
                       Expiring on -{" "}
                       {formatDateFromMilliseconds(response.expirydate)}
                     </p>
-                    <p>Quantityyyyyyyyyy - {response.quantity}</p>
+                    <p>Quantity - {response.quantity}</p>
                     <h2>{response.veg}</h2>
                     <p>Expires in - {expirydate(response.expirydate)} Days</p>
                     <button
