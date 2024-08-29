@@ -15,9 +15,6 @@ const SimpleModal = ({
   handleOpenModal,
 }) => {
 
-  console.log("###", editData);
-  
-
   return (
     <div>
       <Modal
