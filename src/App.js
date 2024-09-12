@@ -33,10 +33,6 @@ function App() {
     );
 
     setExpiringProducts(allFilteredExpiringProducts);
-    console.log(
-      "expiringProducts inside useEffect (before state update takes effect):",
-      expiringProducts
-    );
   }, [householditemsData]);
 
   const updateHouseholdItems = (newItems) => {
@@ -150,35 +146,44 @@ function App() {
         setIsNonVegSelected={setIsNonVegSelected}
       />
 
-      <div className="wrapperItems">
-        <h1>Expiring Items</h1>
-
-
-        {expiringProducts.map((response) => {
-          return (
-            <div className="card">
-           
-              <h1>{response.name}</h1>
-              <p>
-                Bought on - {formatDateFromMilliseconds(response.boughtdate)}
-              </p>
-              <p>
-                Expiring on - {formatDateFromMilliseconds(response.expirydate)}
-              </p>
-              <p>Quantity - {response.quantity}</p>
-              <h2>{response.veg}</h2>
-
-              <p
-                className={expirydate(response.expirydate) < 2 ? "redText" : ""}
-              >
-                {expirydate(response.expirydate) < 0
-                  ? `Expired  : ${expirydate(response.expirydate)} Days Ago`
-                  : `Expires in : ${expirydate(response.expirydate)} Days`}
-              </p>
-            </div>
-          );
-        })}
-      </div>
+      {expiringProducts.length > 0 ? (
+        <div className="padding-univarsal">
+          <h1>Expiring Items</h1>
+          <div className="wrapperItems pd-l-0">
+            {expiringProducts.map((response) => {
+              return (
+                <div
+                  className={
+                    expirydate(response.expirydate) <= 0
+                      ? "card redText"
+                      : "card"
+                  }
+                >
+                  <h1>{response.name}</h1>
+                  <p>Quantity - {response.quantity}</p>
+                  <p
+                    className={
+                      expirydate(response.expirydate) < 2 ? "redText" : ""
+                    }
+                  >
+                    {expirydate(response.expirydate) < 0
+                      ? `Expired  : ${expirydate(response.expirydate)} Days Ago`
+                      : `Expires in : ${expirydate(response.expirydate)} Days`}
+                  </p>
+                  <button
+                    onClick={() => deleteItems(response.name, response.id)}
+                  >
+                    Delete
+                  </button>
+                  <button onClick={() => edit(response)}>EDIT</button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
 
       <div className="wrapperItems">
         {filteredItems.map((items, index) => {
