@@ -11,7 +11,6 @@ const useGetdata = () => {
 
   const collectionRef = collection(db, "householditems");
   const getdata = async () => {
-    console.log("API CALEED zzz" );
     const data = await getDocs(collectionRef);
     sethouseholditems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };

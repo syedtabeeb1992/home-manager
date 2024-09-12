@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FormControlLabel, Switch } from "@mui/material";
-
+import "../../styles/global.css";
 const RadioSelector = ({ isVegSelected, setIsVegSelected, isNonVegSelected, setIsNonVegSelected }) => {
   const handleVegChange = (event) => {
     setIsVegSelected(event.target.checked);
@@ -11,7 +11,7 @@ const RadioSelector = ({ isVegSelected, setIsVegSelected, isNonVegSelected, setI
   };
 
   return (
-    <div>
+    <div className="padding-univarsal">
       <FormControlLabel
         control={<Switch checked={isVegSelected} onChange={handleVegChange} />}
         label="Veg"

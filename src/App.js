@@ -18,11 +18,21 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isVegSelected, setIsVegSelected] = useState(true);
   const [isNonVegSelected, setIsNonVegSelected] = useState(true);
-  const [isExpiring, setisExpiring] = useState(false);
-  const [isExpired, setExpired] = useState(false);
+  const [expiringProducts, setExpiringProducts] = useState([]);
 
   useEffect(() => {
     setHouseholdItems(householditemsData);
+    const allFilteredExpiringProducts = householditemsData.reduce(
+      (acc, item) => {
+        const filteredExpiringProducts = item.categories.filter((product) => {
+          return expirydate(product.expirydate) <= 5;
+        });
+        return acc.concat(filteredExpiringProducts);
+      },
+      []
+    );
+
+    setExpiringProducts(allFilteredExpiringProducts);
   }, [householditemsData]);
 
   const updateHouseholdItems = (newItems) => {
@@ -80,10 +90,9 @@ function App() {
     const timeDifference = expiryDate.getTime() - currentDate;
     const daysToExpire = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
 
-    console.log("Days to expire:", daysToExpire); // Debugging line
-
     return daysToExpire;
   };
+
   const filteredItems = householditems
     .map((item) => {
       const filteredCategories = item.categories.filter((category) => {
@@ -137,6 +146,45 @@ function App() {
         setIsNonVegSelected={setIsNonVegSelected}
       />
 
+      {expiringProducts.length > 0 ? (
+        <div className="padding-univarsal">
+          <h1>Expiring Items</h1>
+          <div className="wrapperItems pd-l-0">
+            {expiringProducts.map((response) => {
+              return (
+                <div
+                  className={
+                    expirydate(response.expirydate) <= 0
+                      ? "card redText"
+                      : "card"
+                  }
+                >
+                  <h1>{response.name}</h1>
+                  <p>Quantity - {response.quantity}</p>
+                  <p
+                    className={
+                      expirydate(response.expirydate) < 2 ? "redText" : ""
+                    }
+                  >
+                    {expirydate(response.expirydate) < 0
+                      ? `Expired  : ${expirydate(response.expirydate)} Days Ago`
+                      : `Expires in : ${expirydate(response.expirydate)} Days`}
+                  </p>
+                  <button
+                    onClick={() => deleteItems(response.name, response.id)}
+                  >
+                    Delete
+                  </button>
+                  <button onClick={() => edit(response)}>EDIT</button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+
       <div className="wrapperItems">
         {filteredItems.map((items, index) => {
           if (items.categories && Array.isArray(items.categories)) {
@@ -166,7 +214,6 @@ function App() {
                   {expirydate(response.expirydate) < 0
                     ? `Expired  : ${expirydate(response.expirydate)} Days Ago`
                     : `Expires in : ${expirydate(response.expirydate)} Days`}
-           
                 </p>
                 <button onClick={() => deleteItems(response.name, items.id)}>
                   Delete
