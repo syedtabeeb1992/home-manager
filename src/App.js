@@ -131,36 +131,91 @@ function App() {
         handleEditModalOpen={handleEditModalOpen}
       />
 
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchQuery}
-        onChange={handleSearchChange}
-        className="searchBox"
-      />
+      <div className="searchBoxWrap">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="searchBox"
+        />
+      </div>
 
-      <RadioSelector
-        isVegSelected={isVegSelected}
-        setIsVegSelected={setIsVegSelected}
-        isNonVegSelected={isNonVegSelected}
-        setIsNonVegSelected={setIsNonVegSelected}
-      />
+      <div className="home-wrapper">
+        <RadioSelector
+          isVegSelected={isVegSelected}
+          setIsVegSelected={setIsVegSelected}
+          isNonVegSelected={isNonVegSelected}
+          setIsNonVegSelected={setIsNonVegSelected}
+        />
 
-      {expiringProducts.length > 0 ? (
-        <div className="padding-univarsal">
-          <h1>Expiring Items</h1>
-          <div className="wrapperItems pd-l-0">
-            {expiringProducts.map((response) => {
-              return (
+        {expiringProducts.length > 0 ? (
+          <div className="padding-univarsal">
+            <h1>Expiring Items</h1>
+            <div className="wrapperItems pd-l-0">
+              {expiringProducts.map((response) => {
+                return (
+                  <div
+                    className={
+                      expirydate(response.expirydate) <= 0
+                        ? "card redText"
+                        : "card"
+                    }
+                  >
+                    <h1>{response.name}</h1>
+                    <p>Quantity - {response.quantity}</p>
+                    <p
+                      className={
+                        expirydate(response.expirydate) < 2 ? "redText" : ""
+                      }
+                    >
+                      {expirydate(response.expirydate) < 0
+                        ? `Expired  : ${expirydate(
+                            response.expirydate
+                          )} Days Ago`
+                        : `Expires in : ${expirydate(
+                            response.expirydate
+                          )} Days`}
+                    </p>
+                    <button
+                      onClick={() => deleteItems(response.name, response.id)}
+                    >
+                      Delete
+                    </button>
+                    <button onClick={() => edit(response)}>EDIT</button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+
+        <div className="wrapperItems">
+          {filteredItems.map((items, index) => {
+            if (items.categories && Array.isArray(items.categories)) {
+              return items.categories.map((response, subIndex) => (
                 <div
                   className={
                     expirydate(response.expirydate) <= 0
                       ? "card redText"
                       : "card"
                   }
+                  key={`${items.id}-${subIndex}`}
                 >
                   <h1>{response.name}</h1>
+                  <p>
+                    Bought on -{" "}
+                    {formatDateFromMilliseconds(response.boughtdate)}
+                  </p>
+                  <p>
+                    Expiring on -{" "}
+                    {formatDateFromMilliseconds(response.expirydate)}
+                  </p>
                   <p>Quantity - {response.quantity}</p>
+                  <h2>{response.veg}</h2>
+
                   <p
                     className={
                       expirydate(response.expirydate) < 2 ? "redText" : ""
@@ -170,60 +225,16 @@ function App() {
                       ? `Expired  : ${expirydate(response.expirydate)} Days Ago`
                       : `Expires in : ${expirydate(response.expirydate)} Days`}
                   </p>
-                  <button
-                    onClick={() => deleteItems(response.name, response.id)}
-                  >
+                  <button onClick={() => deleteItems(response.name, items.id)}>
                     Delete
                   </button>
                   <button onClick={() => edit(response)}>EDIT</button>
                 </div>
-              );
-            })}
-          </div>
+              ));
+            }
+            return null;
+          })}
         </div>
-      ) : (
-        ""
-      )}
-
-      <div className="wrapperItems">
-        {filteredItems.map((items, index) => {
-          if (items.categories && Array.isArray(items.categories)) {
-            return items.categories.map((response, subIndex) => (
-              <div
-                className={
-                  expirydate(response.expirydate) <= 0 ? "card redText" : "card"
-                }
-                key={`${items.id}-${subIndex}`}
-              >
-                <h1>{response.name}</h1>
-                <p>
-                  Bought on - {formatDateFromMilliseconds(response.boughtdate)}
-                </p>
-                <p>
-                  Expiring on -{" "}
-                  {formatDateFromMilliseconds(response.expirydate)}
-                </p>
-                <p>Quantity - {response.quantity}</p>
-                <h2>{response.veg}</h2>
-
-                <p
-                  className={
-                    expirydate(response.expirydate) < 2 ? "redText" : ""
-                  }
-                >
-                  {expirydate(response.expirydate) < 0
-                    ? `Expired  : ${expirydate(response.expirydate)} Days Ago`
-                    : `Expires in : ${expirydate(response.expirydate)} Days`}
-                </p>
-                <button onClick={() => deleteItems(response.name, items.id)}>
-                  Delete
-                </button>
-                <button onClick={() => edit(response)}>EDIT</button>
-              </div>
-            ));
-          }
-          return null;
-        })}
       </div>
     </div>
   );
